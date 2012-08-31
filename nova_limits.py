@@ -136,7 +136,7 @@ def nova_preprocess(midware, environ):
 
         # Now, build a representation of the limit
         for verb in verbs:
-            if len(buck_list) > 1:
+            if len(buck_list) >= 1:
                 # Generate one entry for each bucket
                 for params, bucket in buck_list:
                     # Substitute (some of) the values in params to
@@ -151,8 +151,8 @@ def nova_preprocess(midware, environ):
                             remaining=bucket.messages,
                             resetTime=bucket.expire,
                             ))
-
-            limits.append(dict(
+            else:
+                limits.append(dict(
                     verb=verb,
                     URI=uri,
                     regex=uri,
