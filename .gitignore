@@ -2,3 +2,4 @@
 /dist
 /nova_limits.egg-info
 *.pyc
+.venv/
