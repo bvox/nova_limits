@@ -105,6 +105,9 @@ def nova_preprocess(midware, environ):
 
             # Decode the key and the bucket and store them
             params = ParamsDict(turns_lim.decode(key))
+            if 'tenant' in params and params['tenant'] != tenant:
+                continue
+
             bucket = turns_lim.bucket_class.hydrate(midware.db,
                                                     msgpack.loads(raw),
                                                     turns_lim, key)
