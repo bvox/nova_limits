@@ -413,15 +413,6 @@ class TestPreprocess(unittest.TestCase):
                     ),
                 dict(
                     verb='GET',
-                    URI='/spam/{uri3}/{param}',
-                    regex='/spam/{uri3}/{param}',
-                    value=50,
-                    unit='MINUTE',
-                    remaining=5,
-                    resetTime=1000000005,
-                    ),
-                dict(
-                    verb='GET',
                     URI='/spam/{uri4}/{param}',
                     regex='/spam/{uri4}/{param}',
                     value=50,
@@ -472,8 +463,8 @@ class TestPreprocess(unittest.TestCase):
         self.assertEqual(environ['nova.limits'], [
                 dict(
                     verb='GET',
-                    URI='/{tenant}/{uri}',
-                    regex='/{tenant}/{uri}',
+                    URI='/spam/{uri}',
+                    regex='/spam/{uri}',
                     value=5,
                     unit='MINUTE',
                     remaining=0,
