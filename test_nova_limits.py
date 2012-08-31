@@ -440,6 +440,47 @@ class TestPreprocess(unittest.TestCase):
                     ),
                 ])
 
+    def test_filter_by_tenant(self):
+        db = FakeDatabase({
+                'limit-class:spam': 'lim_class',
+                'limit-class:foo': 'lim_class',
+                'bucket:uuid/{"tenant": "foo"}': dict(
+                    messages=3,
+                    expire=999999999,
+                    ),
+                'bucket:uuid/{"tenant": "spam"}': dict(
+                    messages=0,
+                    expire=1000000005,
+                    ),
+                }, 'bucket:uuid4/{"param": "baz"}', 'bucket:uuid6')
+        midware = FakeMiddleware(db, [
+                FakeLimit(
+                    uuid='uuid',
+                    queries=[],
+                    verbs=['GET'],
+                    unit='minute',
+                    uri='/{tenant}/{uri}',
+                    value=5),
+                ])
+        environ = {
+            'nova.context': FakeObject(project_id='spam'),
+            }
+        nova_limits.nova_preprocess(midware, environ)
+
+        self.assertEqual(environ['turnstile.nova.tenant'], 'spam')
+        self.assertEqual(environ['turnstile.nova.limitclass'], 'lim_class')
+        self.assertEqual(environ['nova.limits'], [
+                dict(
+                    verb='GET',
+                    URI='/{tenant}/{uri}',
+                    regex='/{tenant}/{uri}',
+                    value=5,
+                    unit='MINUTE',
+                    remaining=0,
+                    resetTime=1000000005,
+                    ),
+                ])
+
 
 class TestNovaClassLimit(unittest.TestCase):
     def setUp(self):
