@@ -1,7 +1,7 @@
 Source: nova-limits
 Section: python
 Priority: extra
-Maintainer: Major Hayden <major.hayden@rackspace.com>
+Maintainer: Rafael Durán Castañeda <rafael@bvox.net>
 Build-Depends: debhelper (>= 7.0.50)
 Build-Depends-Indep: python-support, python-setuptools
 Standards-Version: 3.9.1
@@ -9,9 +9,9 @@ Standards-Version: 3.9.1
 Package: python-nova-limits
 Architecture: all
 Section: python
-Depends: ${python:Depends}, 
-  ${misc:Depends}, 
-  python-argparse, 
+Depends: ${python:Depends},
+  ${misc:Depends},
+  python-argparse,
   python-turnstile,
   python-nova
 XB-Python-Version: ${python:Versions}
